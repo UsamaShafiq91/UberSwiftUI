@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  LocationSearchActivationView.swift
 //  UberSwiftUI
 //
 //  Created by UsamaShafiq on 02/12/2024.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct LocationSearchActivationView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    HomeView()
+    LocationSearchActivationView()
 }
