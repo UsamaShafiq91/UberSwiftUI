@@ -8,11 +8,35 @@
 import SwiftUI
 
 struct LocationSearchResultView: View {
+    
+    var title = ""
+    var subTitle = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            Image(systemName: "mappin.circle.fill")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .foregroundStyle(.blue)
+                .tint(.white)
+            
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                
+                Text(subTitle)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                
+                Divider()
+            }
+            .padding(.leading, 4)
+        }
+        .padding(.leading)
     }
 }
 
 #Preview {
-    LocationSearchResultView()
+    LocationSearchResultView(title: "Coffee", subTitle: "123 main")
 }
