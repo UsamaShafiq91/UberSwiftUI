@@ -12,7 +12,6 @@ import SwiftUI
 struct UberMapView: UIViewRepresentable {
     
     let mapView = MKMapView()
-    let locationManager = LocationManager()
     @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
     @Binding var mapState: MapViewState
 
@@ -33,10 +32,12 @@ struct UberMapView: UIViewRepresentable {
         case .searchingForLocation:
             break
         case .locationSelected:
-            if let coordinates = locationSearchViewModel.selectedLocationCoordinates {
+            if let coordinates = locationSearchViewModel.selectedLocation?.coordinates {
                 context.coordinator.selectAndAnnotateLocation(coordinate: coordinates)
                 context.coordinator.configurePolyline(destination: coordinates)
             }
+        case .polylineAdded:
+            break
         }
     }
     
@@ -79,7 +80,6 @@ extension UberMapView {
             parent.mapView.addAnnotation(annotation)
             
             parent.mapView.selectAnnotation(annotation, animated: true)
-            parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
         }
         
         
@@ -94,30 +94,18 @@ extension UberMapView {
         func configurePolyline(destination: CLLocationCoordinate2D) {
             guard let userlocation = userlocation else { return }
             
-            getDestinationRoute(userlocation: userlocation,
-                                destination: destination,
-                                completion: { route in
+            parent.locationSearchViewModel.getDestinationRoute(userlocation: userlocation,
+                                                               destination: destination,
+                                                               completion: { route in
                 self.parent.mapView.addOverlay(route.polyline)
-            })
-        }
-        
-        func getDestinationRoute(userlocation: CLLocationCoordinate2D,
-                                 destination: CLLocationCoordinate2D,
-                                 completion: @escaping(MKRoute) -> Void) {
-            
-            let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: MKPlacemark(coordinate: userlocation))
-            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: destination))
-
-            let directions = MKDirections(request: request)
-            directions.calculate(completionHandler: { response, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    return
-                }
+                self.parent.mapState = .polylineAdded
                 
-                guard let route = response?.routes.first else { return }
-                completion(route)
+                let rect = self.parent.mapView.mapRectThatFits(route.polyline.boundingMapRect,
+                                                               edgePadding: UIEdgeInsets(top: 64,
+                                                                                         left: 32,
+                                                                                         bottom: 500,
+                                                                                         right: 32))
+                self.parent.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
             })
         }
         

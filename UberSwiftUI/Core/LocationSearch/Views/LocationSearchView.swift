@@ -54,15 +54,17 @@ struct LocationSearchView: View {
                     ForEach(locationSearchViewModel.results, id: \.self) {result in
                         LocationSearchResultView(title: result.title, subTitle: result.subtitle)
                             .onTapGesture {
-                                locationSearchViewModel.selectLocation(location: result)
-                                
-                                mapState = .locationSelected
+                                withAnimation(.spring, {
+                                    locationSearchViewModel.selectLocation(location: result)
+                                    
+                                    mapState = .locationSelected
+                                })
                             }
                     }
                 }
             }
         }
-        .background(.white)
+        .background(Color.theme.backgroundColor)
     }
 }
 
