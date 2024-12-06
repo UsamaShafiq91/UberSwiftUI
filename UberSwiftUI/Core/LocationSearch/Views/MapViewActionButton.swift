@@ -11,6 +11,7 @@ struct MapViewActionButton: View {
     
     @Binding var mapState: MapViewState
     @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
+    @EnvironmentObject private var authModel: AuthViewModel
 
     var body: some View {
         Button(action: {
@@ -32,7 +33,7 @@ struct MapViewActionButton: View {
     func peformActionFor(state: MapViewState) {
         switch state {
         case .noInput:
-            break
+            authModel.signoutUser()
         case .searchingForLocation:
             mapState = .noInput
         case .locationSelected, .polylineAdded:
