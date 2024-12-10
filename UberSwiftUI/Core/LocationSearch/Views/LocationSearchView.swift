@@ -34,10 +34,12 @@ struct LocationSearchView: View {
                 VStack {
                     TextField("Current Location", text: $startLocationText)
                         .frame(height: 32)
+                        .padding(.leading)
                         .background(Color(.systemGray5))
                     
                     TextField("Where to?", text: $locationSearchViewModel.searchQuery)
                         .frame(height: 32)
+                        .padding(.leading)
                         .background(Color(.systemGray3))
                 }
                 .padding(.leading)
@@ -49,20 +51,8 @@ struct LocationSearchView: View {
                 .padding(.vertical)
                 .padding(.horizontal)
             
-            ScrollView {
-                VStack {
-                    ForEach(locationSearchViewModel.results, id: \.self) {result in
-                        LocationSearchResultView(title: result.title, subTitle: result.subtitle)
-                            .onTapGesture {
-                                withAnimation(.spring, {
-                                    locationSearchViewModel.selectLocation(location: result)
-                                    
-                                    mapState = .locationSelected
-                                })
-                            }
-                    }
-                }
-            }
+            LocationSearchResultView(locationSearchViewModel: locationSearchViewModel, config: .ride)
+            
         }
         .background(Color.theme.backgroundColor)
     }

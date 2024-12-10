@@ -58,6 +58,11 @@ struct HomeView: View {
                         .onReceive(LocationManager.shared.$userLocation, perform: { userLocation in
                             locationSearchViewModel.userLocation = userLocation
                         })
+                        .onReceive(locationSearchViewModel.$selectedLocation, perform: { location in
+                            if location != nil {
+                                mapState = .locationSelected
+                            }
+                        })
                         .offset(x: showSideMenu ? 300 : 0)
                         .shadow(color: showSideMenu ? .black : .clear, radius: 10)
                     }

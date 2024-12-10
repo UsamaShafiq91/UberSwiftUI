@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LocationSearchResultView: View {
+struct LocationSearchResultCellView: View {
     
     var title = ""
     var subTitle = ""
@@ -38,5 +38,5 @@ struct LocationSearchResultView: View {
 }
 
 #Preview {
-    LocationSearchResultView(title: "Coffee", subTitle: "123 main")
+    LocationSearchResultCellView(title: "Coffee", subTitle: "123 main")
 }

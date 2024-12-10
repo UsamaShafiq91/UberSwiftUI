@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F15673012CFECA0A00D481EA /* MapViewActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15673002CFECA0A00D481EA /* MapViewActionButton.swift */; };
 		F15673032CFEDF1E00D481EA /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15673022CFEDF1E00D481EA /* LocationSearchView.swift */; };
-		F15673052CFEE29600D481EA /* LocationSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15673042CFEE29600D481EA /* LocationSearchResultView.swift */; };
+		F15673052CFEE29600D481EA /* LocationSearchResultCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F15673042CFEE29600D481EA /* LocationSearchResultCellView.swift */; };
 		F17E77412CFEE83600A4023A /* LocationSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E77402CFEE83600A4023A /* LocationSearchViewModel.swift */; };
 		F17E77432CFF1D4000A4023A /* MapViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17E77422CFF1D4000A4023A /* MapViewState.swift */; };
 		F18E25912D02D50C00476CB9 /* CustomInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18E25902D02D50C00476CB9 /* CustomInputField.swift */; };
@@ -50,6 +50,10 @@
 		F1AAA5752D081A8400FCE6DE /* SavedLocationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */; };
 		F1AAA57A2D081AAA00FCE6DE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */; };
 		F1AAA57C2D081E2D00FCE6DE /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */; };
+		F1AAA57E2D08259D00FCE6DE /* SavedLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA57D2D08259D00FCE6DE /* SavedLocationViewModel.swift */; };
+		F1AAA5802D082B8F00FCE6DE /* LocationSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA57F2D082B8F00FCE6DE /* LocationSearchResultView.swift */; };
+		F1AAA5822D08357D00FCE6DE /* SavedLocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5812D08357D00FCE6DE /* SavedLocationSearchView.swift */; };
+		F1AAA5842D083F7A00FCE6DE /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5832D083F7A00FCE6DE /* SavedLocation.swift */; };
 		F1B7FA102D06B1BA005231DC /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA0F2D06B1BA005231DC /* SideMenuView.swift */; };
 		F1B7FA122D06BC3C005231DC /* SideMenuOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA112D06BC3C005231DC /* SideMenuOptionViewModel.swift */; };
 		F1B7FA142D06C02B005231DC /* SideMenuOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA132D06C02B005231DC /* SideMenuOptionView.swift */; };
@@ -65,7 +69,7 @@
 /* Begin PBXFileReference section */
 		F15673002CFECA0A00D481EA /* MapViewActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewActionButton.swift; sourceTree = "<group>"; };
 		F15673022CFEDF1E00D481EA /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
-		F15673042CFEE29600D481EA /* LocationSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultView.swift; sourceTree = "<group>"; };
+		F15673042CFEE29600D481EA /* LocationSearchResultCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultCellView.swift; sourceTree = "<group>"; };
 		F17E77402CFEE83600A4023A /* LocationSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewModel.swift; sourceTree = "<group>"; };
 		F17E77422CFF1D4000A4023A /* MapViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewState.swift; sourceTree = "<group>"; };
 		F18E25902D02D50C00476CB9 /* CustomInputField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputField.swift; sourceTree = "<group>"; };
@@ -82,6 +86,10 @@
 		F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationRowView.swift; sourceTree = "<group>"; };
 		F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		F1AAA57D2D08259D00FCE6DE /* SavedLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationViewModel.swift; sourceTree = "<group>"; };
+		F1AAA57F2D082B8F00FCE6DE /* LocationSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultView.swift; sourceTree = "<group>"; };
+		F1AAA5812D08357D00FCE6DE /* SavedLocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationSearchView.swift; sourceTree = "<group>"; };
+		F1AAA5832D083F7A00FCE6DE /* SavedLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocation.swift; sourceTree = "<group>"; };
 		F1B7FA0F2D06B1BA005231DC /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		F1B7FA112D06BC3C005231DC /* SideMenuOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionViewModel.swift; sourceTree = "<group>"; };
 		F1B7FA132D06C02B005231DC /* SideMenuOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionView.swift; sourceTree = "<group>"; };
@@ -136,6 +144,7 @@
 				F18E25902D02D50C00476CB9 /* CustomInputField.swift */,
 				F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */,
 				F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */,
+				F1AAA57F2D082B8F00FCE6DE /* LocationSearchResultView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -186,6 +195,7 @@
 		F1AAA5772D081A9100FCE6DE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F1AAA57D2D08259D00FCE6DE /* SavedLocationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -194,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */,
+				F1AAA5812D08357D00FCE6DE /* SavedLocationSearchView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,6 +282,7 @@
 				F194F56F2D0035B600418ACB /* RideType.swift */,
 				F194F5732D004F5600418ACB /* UberLocation.swift */,
 				F18E25C92D031A7C00476CB9 /* User.swift */,
+				F1AAA5832D083F7A00FCE6DE /* SavedLocation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -353,7 +365,7 @@
 				F1E447A62CFD97FC007D819E /* LocationSearchActivationView.swift */,
 				F15673002CFECA0A00D481EA /* MapViewActionButton.swift */,
 				F15673022CFEDF1E00D481EA /* LocationSearchView.swift */,
-				F15673042CFEE29600D481EA /* LocationSearchResultView.swift */,
+				F15673042CFEE29600D481EA /* LocationSearchResultCellView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -468,6 +480,7 @@
 			files = (
 				F17E77412CFEE83600A4023A /* LocationSearchViewModel.swift in Sources */,
 				F194F5762D00608100418ACB /* Color+Extension.swift in Sources */,
+				F1AAA5802D082B8F00FCE6DE /* LocationSearchResultView.swift in Sources */,
 				F15673032CFEDF1E00D481EA /* LocationSearchView.swift in Sources */,
 				F1B7FA122D06BC3C005231DC /* SideMenuOptionViewModel.swift in Sources */,
 				F1AAA5752D081A8400FCE6DE /* SavedLocationRowView.swift in Sources */,
@@ -475,12 +488,15 @@
 				F1E447A12CFD8E18007D819E /* LocationManager.swift in Sources */,
 				F194F56E2D00230400418ACB /* RideRequestView.swift in Sources */,
 				F18E25C82D02FC0B00476CB9 /* AuthViewModel.swift in Sources */,
+				F1AAA5822D08357D00FCE6DE /* SavedLocationSearchView.swift in Sources */,
+				F1AAA57E2D08259D00FCE6DE /* SavedLocationViewModel.swift in Sources */,
 				F18E25912D02D50C00476CB9 /* CustomInputField.swift in Sources */,
 				F1AAA57C2D081E2D00FCE6DE /* SettingsRowView.swift in Sources */,
 				F18E25CA2D031A7C00476CB9 /* User.swift in Sources */,
 				F194F5722D00419500418ACB /* Double+Extension.swift in Sources */,
+				F1AAA5842D083F7A00FCE6DE /* SavedLocation.swift in Sources */,
 				F17E77432CFF1D4000A4023A /* MapViewState.swift in Sources */,
-				F15673052CFEE29600D481EA /* LocationSearchResultView.swift in Sources */,
+				F15673052CFEE29600D481EA /* LocationSearchResultCellView.swift in Sources */,
 				F1B7FA142D06C02B005231DC /* SideMenuOptionView.swift in Sources */,
 				F1AAA57A2D081AAA00FCE6DE /* SettingsView.swift in Sources */,
 				F1E4479F2CFD8C14007D819E /* UberMapView.swift in Sources */,

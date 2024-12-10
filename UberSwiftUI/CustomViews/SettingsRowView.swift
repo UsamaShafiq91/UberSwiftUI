@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct SettingsRowView: View {
+    
+    let icon: String
+    let title: String
+    let tint: Color
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .imageScale(.medium)
+                .font(.title)
+                .foregroundStyle(tint)
+            
+            Text(title)
+                .foregroundStyle(Color.theme.primaryTextColor)
+            
+            Spacer()
+        }
+        .padding(4)
     }
 }
 
 #Preview {
-    SettingsRowView()
+    SettingsRowView(icon: "bell.circle.fill", title: "Notifications", tint: .purple)
 }

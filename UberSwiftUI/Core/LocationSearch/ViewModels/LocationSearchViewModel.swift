@@ -7,6 +7,8 @@
 
 import Foundation
 import MapKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class LocationSearchViewModel: NSObject, ObservableObject {
     
@@ -30,7 +32,7 @@ class LocationSearchViewModel: NSObject, ObservableObject {
         searchCompletor.queryFragment = searchQuery
     }
     
-    func selectLocation(location: MKLocalSearchCompletion) {
+    func selectLocation(location: MKLocalSearchCompletion, config: LocationResultViewConfig) {
         searchLocation(localSearch: location,
                        completionHandler: {(response, error) in
             if let error = error {
@@ -41,10 +43,49 @@ class LocationSearchViewModel: NSObject, ObservableObject {
             
             guard let locationItem = response?.mapItems.first else { return }
             
+            let coordinates = locationItem.placemark.coordinate
             
-            self.selectedLocation = UberLocation(title: location.title,
-                                                 coordinates: locationItem.placemark.coordinate)
+            switch config {
+            case .ride:
+                self.selectedLocation = UberLocation(title: location.title,
+                                                     coordinates: coordinates)
+            case .savedLocation(let viewModel):
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                let savedLocation = SavedLocation(title: location.title,
+                                                  address: location.subtitle,
+                                                  coordinates: GeoPoint(latitude: coordinates.latitude,
+                                                                        longitude: coordinates.longitude))
+                
+                guard let encodedLocation = try? Firestore.Encoder().encode(savedLocation) else { return }
+                
+                Firestore.firestore().collection("users").document(uid).updateData([
+                    viewModel.databaseKey: encodedLocation
+                ])
+            }
         })
+        
+        switch config {
+        case .ride:
+            searchLocation(localSearch: location,
+                           completionHandler: {(response, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    
+                    return
+                }
+                
+                guard let locationItem = response?.mapItems.first else { return }
+                
+                
+                self.selectedLocation = UberLocation(title: location.title,
+                                                     coordinates: locationItem.placemark.coordinate)
+            })
+        case .savedLocation:
+            print("Saved location")
+        }
+        
+        
+        
     }
     
     func searchLocation(localSearch: MKLocalSearchCompletion, completionHandler: @escaping MKLocalSearch.CompletionHandler) {
