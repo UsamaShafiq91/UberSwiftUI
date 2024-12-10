@@ -10,47 +10,61 @@ import SwiftUI
 struct HomeView: View {
     
     @State private var mapState = MapViewState.noInput
+    @State private var showSideMenu = false
     @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
     @EnvironmentObject private var authModel: AuthViewModel
-
+    
     var body: some View {
         Group {
             if authModel.userSession == nil {
                 LoginView()
             }
-            else {
-                ZStack(alignment: .bottom) {
-                    ZStack(alignment: .top) {
-                        UberMapView(mapState: $mapState)
-                            .ignoresSafeArea()
-                        
-                        if mapState == .searchingForLocation {
-                            LocationSearchView(mapState: $mapState)
+            else if let user = authModel.user {
+                NavigationStack {
+                    ZStack {
+                        if showSideMenu {
+                            SideMenuView(user: user)
                         }
-                        else if mapState == .noInput {
-                            LocationSearchActivationView()
-                                .padding(.top, 72)
-                                .padding(.horizontal)
-                                .onTapGesture {
-                                    withAnimation(.spring, {
-                                        mapState = .searchingForLocation
-                                    })
+                        
+                        ZStack(alignment: .bottom) {
+                            ZStack(alignment: .top) {
+                                UberMapView(mapState: $mapState)
+                                    .ignoresSafeArea()
+                                
+                                if mapState == .searchingForLocation {
+                                    LocationSearchView(mapState: $mapState)
                                 }
+                                else if mapState == .noInput {
+                                    LocationSearchActivationView()
+                                        .padding(.top, 72)
+                                        .padding(.horizontal)
+                                        .onTapGesture {
+                                            withAnimation(.spring, {
+                                                mapState = .searchingForLocation
+                                            })
+                                        }
+                                }
+                                
+                                MapViewActionButton(mapState: $mapState, showSideMenu: $showSideMenu)
+                                    .padding(.top, 5)
+                                    .padding(.horizontal)
+                            }
+                            
+                            if mapState == .locationSelected || mapState == .polylineAdded {
+                                RideRequestView()
+                            }
                         }
-                        
-                        MapViewActionButton(mapState: $mapState)
-                            .padding(.top, 5)
-                            .padding(.horizontal)
+                        .ignoresSafeArea(edges: .bottom)
+                        .onReceive(LocationManager.shared.$userLocation, perform: { userLocation in
+                            locationSearchViewModel.userLocation = userLocation
+                        })
+                        .offset(x: showSideMenu ? 300 : 0)
+                        .shadow(color: showSideMenu ? .black : .clear, radius: 10)
                     }
-                    
-                    if mapState == .locationSelected || mapState == .polylineAdded {
-                        RideRequestView()
-                    }
+                    .onAppear(perform: {
+                        showSideMenu = false
+                    })
                 }
-                .ignoresSafeArea(edges: .bottom)
-                .onReceive(LocationManager.shared.$userLocation, perform: { userLocation in
-                    locationSearchViewModel.userLocation = userLocation
-                })
             }
         }
     }
@@ -58,4 +72,7 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(LocationSearchViewModel())
+        .environmentObject(AuthViewModel())
+    
 }

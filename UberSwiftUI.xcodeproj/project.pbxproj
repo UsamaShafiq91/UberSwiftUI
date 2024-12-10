@@ -47,6 +47,12 @@
 		F194F5742D004F5600418ACB /* UberLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F194F5732D004F5600418ACB /* UberLocation.swift */; };
 		F194F5762D00608100418ACB /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F194F5752D00608100418ACB /* Color+Extension.swift */; };
 		F194F57B2D0069E100418ACB /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F194F57A2D0069E100418ACB /* LoginView.swift */; };
+		F1AAA5752D081A8400FCE6DE /* SavedLocationRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */; };
+		F1AAA57A2D081AAA00FCE6DE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */; };
+		F1AAA57C2D081E2D00FCE6DE /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */; };
+		F1B7FA102D06B1BA005231DC /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA0F2D06B1BA005231DC /* SideMenuView.swift */; };
+		F1B7FA122D06BC3C005231DC /* SideMenuOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA112D06BC3C005231DC /* SideMenuOptionViewModel.swift */; };
+		F1B7FA142D06C02B005231DC /* SideMenuOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B7FA132D06C02B005231DC /* SideMenuOptionView.swift */; };
 		F1E447882CFD6F4F007D819E /* UberSwiftUIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E447872CFD6F4F007D819E /* UberSwiftUIApp.swift */; };
 		F1E4478C2CFD6F53007D819E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1E4478B2CFD6F53007D819E /* Assets.xcassets */; };
 		F1E4478F2CFD6F53007D819E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F1E4478E2CFD6F53007D819E /* Preview Assets.xcassets */; };
@@ -73,6 +79,12 @@
 		F194F5732D004F5600418ACB /* UberLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberLocation.swift; sourceTree = "<group>"; };
 		F194F5752D00608100418ACB /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		F194F57A2D0069E100418ACB /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocationRowView.swift; sourceTree = "<group>"; };
+		F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		F1B7FA0F2D06B1BA005231DC /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		F1B7FA112D06BC3C005231DC /* SideMenuOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionViewModel.swift; sourceTree = "<group>"; };
+		F1B7FA132D06C02B005231DC /* SideMenuOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionView.swift; sourceTree = "<group>"; };
 		F1E447842CFD6F4F007D819E /* UberSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UberSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1E447872CFD6F4F007D819E /* UberSwiftUIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UberSwiftUIApp.swift; sourceTree = "<group>"; };
 		F1E4478B2CFD6F53007D819E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				F18E25902D02D50C00476CB9 /* CustomInputField.swift */,
+				F1AAA5742D081A8400FCE6DE /* SavedLocationRowView.swift */,
+				F1AAA57B2D081E2D00FCE6DE /* SettingsRowView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -158,6 +172,56 @@
 				F18E25922D02D65B00476CB9 /* RegistrationView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F1AAA5762D081A8900FCE6DE /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F1AAA5782D081A9900FCE6DE /* Views */,
+				F1AAA5772D081A9100FCE6DE /* ViewModels */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		F1AAA5772D081A9100FCE6DE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F1AAA5782D081A9900FCE6DE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F1AAA5792D081AAA00FCE6DE /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F1B7FA0C2D06B1A0005231DC /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				F1B7FA0E2D06B1AC005231DC /* ViewModels */,
+				F1B7FA0D2D06B1A7005231DC /* Views */,
+			);
+			path = SideMenu;
+			sourceTree = "<group>";
+		};
+		F1B7FA0D2D06B1A7005231DC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F1B7FA0F2D06B1BA005231DC /* SideMenuView.swift */,
+				F1B7FA132D06C02B005231DC /* SideMenuOptionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F1B7FA0E2D06B1AC005231DC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F1B7FA112D06BC3C005231DC /* SideMenuOptionViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		F1E4477B2CFD6F4F007D819E = {
@@ -231,6 +295,8 @@
 		F1E447982CFD6FCC007D819E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				F1AAA5762D081A8900FCE6DE /* Settings */,
+				F1B7FA0C2D06B1A0005231DC /* SideMenu */,
 				F194F5772D0069BE00418ACB /* Authentication */,
 				F194F56C2D0022F700418ACB /* Trips */,
 				F1E447A32CFD97C1007D819E /* LocationSearch */,
@@ -403,18 +469,24 @@
 				F17E77412CFEE83600A4023A /* LocationSearchViewModel.swift in Sources */,
 				F194F5762D00608100418ACB /* Color+Extension.swift in Sources */,
 				F15673032CFEDF1E00D481EA /* LocationSearchView.swift in Sources */,
+				F1B7FA122D06BC3C005231DC /* SideMenuOptionViewModel.swift in Sources */,
+				F1AAA5752D081A8400FCE6DE /* SavedLocationRowView.swift in Sources */,
 				F18E25932D02D65B00476CB9 /* RegistrationView.swift in Sources */,
 				F1E447A12CFD8E18007D819E /* LocationManager.swift in Sources */,
 				F194F56E2D00230400418ACB /* RideRequestView.swift in Sources */,
 				F18E25C82D02FC0B00476CB9 /* AuthViewModel.swift in Sources */,
 				F18E25912D02D50C00476CB9 /* CustomInputField.swift in Sources */,
+				F1AAA57C2D081E2D00FCE6DE /* SettingsRowView.swift in Sources */,
 				F18E25CA2D031A7C00476CB9 /* User.swift in Sources */,
 				F194F5722D00419500418ACB /* Double+Extension.swift in Sources */,
 				F17E77432CFF1D4000A4023A /* MapViewState.swift in Sources */,
 				F15673052CFEE29600D481EA /* LocationSearchResultView.swift in Sources */,
+				F1B7FA142D06C02B005231DC /* SideMenuOptionView.swift in Sources */,
+				F1AAA57A2D081AAA00FCE6DE /* SettingsView.swift in Sources */,
 				F1E4479F2CFD8C14007D819E /* UberMapView.swift in Sources */,
 				F15673012CFECA0A00D481EA /* MapViewActionButton.swift in Sources */,
 				F1E4479D2CFD7050007D819E /* HomeView.swift in Sources */,
+				F1B7FA102D06B1BA005231DC /* SideMenuView.swift in Sources */,
 				F194F5742D004F5600418ACB /* UberLocation.swift in Sources */,
 				F1E447882CFD6F4F007D819E /* UberSwiftUIApp.swift in Sources */,
 				F1E447A72CFD97FC007D819E /* LocationSearchActivationView.swift in Sources */,
