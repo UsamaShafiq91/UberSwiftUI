@@ -134,7 +134,7 @@ struct RideRequestView: View {
             .padding(.horizontal)
             
             Button(action: {
-                
+                homeViewModel.requestTrip()
             }, label: {
                 Text("CONFIRM RIDE")
                     .font(.system(size: 16, weight: .bold))

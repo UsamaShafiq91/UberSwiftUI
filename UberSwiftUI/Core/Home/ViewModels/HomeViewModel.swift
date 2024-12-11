@@ -175,6 +175,44 @@ extension HomeViewModel {
     }
 }
 
+// Passenger APIs
+extension HomeViewModel {
+    
+    func requestTrip() {
+        guard let driver = drivers.first,
+              let passenger = user,
+              let dropofflocation = selectedLocation,
+              let coordinates = dropofflocation.coordinates else { return }
+        
+        CLGeocoder().reverseGeocodeLocation(CLLocation(latitude: passenger.coordinates.latitude,
+                                                       longitude: passenger.coordinates.longitude),
+                                            completionHandler: { placemarks, errors in
+            guard let placemark = placemarks?.first else { return }
+            
+            let trip = Trip(id: UUID().uuidString,
+                            passengerUid: passenger.uid,
+                            driverUid: driver.uid,
+                            passengerName: passenger.fullname,
+                            driverName: driver.fullname,
+                            passengerLocation: passenger.coordinates,
+                            driverLocation: driver.coordinates,
+                            pickupLocationName: placemark.name ?? "Current Location",
+                            dropoffLocationName: dropofflocation.title,
+                            pickupLocationAddress: "pickupLocationAddress",
+                            pickupLocation: passenger.coordinates,
+                            dropoffLocation: GeoPoint(latitude: coordinates.latitude,
+                                                      longitude: coordinates.longitude),
+                            tripCost: 50)
+            
+            guard let encodedTrip = try? Firestore.Encoder().encode(trip) else { return }
+            
+            Firestore.firestore().collection("trips").document().setData(encodedTrip, completion: {_ in
+                
+            })
+        })
+    }
+}
+
 extension HomeViewModel: MKLocalSearchCompleterDelegate {
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
