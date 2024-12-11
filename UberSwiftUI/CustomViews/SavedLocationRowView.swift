@@ -36,9 +36,5 @@ struct SavedLocationRowView: View {
 
 #Preview {
     SavedLocationRowView(viewModel: .home,
-                         user: User(uid: "1111",
-                                    fullname: "john",
-                                    email: "john@gmail.com",
-                                    homeLocation: nil,
-                                    workLocation: nil))
+                         user: MockData.user)
 }

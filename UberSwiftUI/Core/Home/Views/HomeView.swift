@@ -13,7 +13,8 @@ struct HomeView: View {
     @State private var showSideMenu = false
     @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
     @EnvironmentObject private var authModel: AuthViewModel
-    
+    @EnvironmentObject private var homeModel: HomeViewModel
+
     var body: some View {
         Group {
             if authModel.userSession == nil {
@@ -79,5 +80,6 @@ struct HomeView: View {
     HomeView()
         .environmentObject(LocationSearchViewModel())
         .environmentObject(AuthViewModel())
+        .environmentObject(HomeViewModel())
     
 }

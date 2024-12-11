@@ -13,6 +13,8 @@ struct UberMapView: UIViewRepresentable {
     
     let mapView = MKMapView()
     @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
+    @EnvironmentObject private var homeModel: HomeViewModel
+
     @Binding var mapState: MapViewState
 
     func makeUIView(context: Context) -> some UIView {
@@ -29,6 +31,7 @@ struct UberMapView: UIViewRepresentable {
         switch mapState {
         case .noInput:
             context.coordinator.clearAnnotationsAndOverlays()
+            context.coordinator.addDriversToMap(drivers: homeModel.drivers)
         case .searchingForLocation:
             break
         case .locationSelected:
@@ -91,6 +94,18 @@ extension UberMapView {
             return overlayRenderer
         }
         
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+            if let driverAnnotation = annotation as? DriverAnnotation {
+                let annotationView = MKAnnotationView(annotation: driverAnnotation, reuseIdentifier: "driverAnnotation")
+                
+                annotationView.image = UIImage(systemName: "car.circle.fill")
+                
+                return annotationView
+            }
+            
+            return nil
+        }
+        
         func configurePolyline(destination: CLLocationCoordinate2D) {
             guard let userlocation = userlocation else { return }
             
@@ -116,6 +131,12 @@ extension UberMapView {
             if let region = region {
                 parent.mapView.setRegion(region, animated: true)
             }
+        }
+        
+        func addDriversToMap(drivers: [User]) {
+            let annotations = drivers.compactMap({DriverAnnotation(driver: $0)})
+            
+            parent.mapView.addAnnotations(annotations)
         }
     }
 }

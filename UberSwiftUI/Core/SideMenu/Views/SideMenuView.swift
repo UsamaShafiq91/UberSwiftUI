@@ -85,5 +85,5 @@ struct SideMenuView: View {
 }
 
 #Preview {
-    SideMenuView(user: User(uid: "123", fullname: "John Doe", email: "john111@gmail.com"))
+    SideMenuView(user: MockData.user)
 }
