@@ -14,17 +14,17 @@ enum LocationResultViewConfig {
 
 struct LocationSearchResultView: View {
     
-    @StateObject var locationSearchViewModel: LocationSearchViewModel
+    @StateObject var homeViewModel: HomeViewModel
     let config: LocationResultViewConfig
     
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(locationSearchViewModel.results, id: \.self) {result in
+                ForEach(homeViewModel.results, id: \.self) {result in
                     LocationSearchResultCellView(title: result.title, subTitle: result.subtitle)
                         .onTapGesture {
                             withAnimation(.spring, {
-                                locationSearchViewModel.selectLocation(location: result, config: config)
+                                homeViewModel.selectLocation(location: result, config: config)
                             })
                         }
                 }
@@ -34,5 +34,5 @@ struct LocationSearchResultView: View {
 }
 
 #Preview {
-    LocationSearchResultView(locationSearchViewModel: LocationSearchViewModel(), config: .ride)
+    LocationSearchResultView(homeViewModel: HomeViewModel(), config: .ride)
 }

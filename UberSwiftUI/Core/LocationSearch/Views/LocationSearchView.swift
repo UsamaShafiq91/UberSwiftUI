@@ -12,7 +12,7 @@ struct LocationSearchView: View {
     @State private var startLocationText = ""
     @Binding var mapState: MapViewState
 
-    @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     var body: some View {
         VStack {
@@ -37,7 +37,7 @@ struct LocationSearchView: View {
                         .padding(.leading)
                         .background(Color(.systemGray5))
                     
-                    TextField("Where to?", text: $locationSearchViewModel.searchQuery)
+                    TextField("Where to?", text: $homeViewModel.searchQuery)
                         .frame(height: 32)
                         .padding(.leading)
                         .background(Color(.systemGray3))
@@ -51,7 +51,7 @@ struct LocationSearchView: View {
                 .padding(.vertical)
                 .padding(.horizontal)
             
-            LocationSearchResultView(locationSearchViewModel: locationSearchViewModel, config: .ride)
+            LocationSearchResultView(homeViewModel: homeViewModel, config: .ride)
             
         }
         .background(Color.theme.backgroundColor)
@@ -60,5 +60,5 @@ struct LocationSearchView: View {
 
 #Preview {
     LocationSearchView(mapState: .constant(MapViewState.noInput))
-        .environmentObject(LocationSearchViewModel())
+        .environmentObject(HomeViewModel())
 }

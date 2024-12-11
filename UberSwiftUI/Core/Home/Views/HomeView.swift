@@ -11,7 +11,6 @@ struct HomeView: View {
     
     @State private var mapState = MapViewState.noInput
     @State private var showSideMenu = false
-    @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
     @EnvironmentObject private var authModel: AuthViewModel
     @EnvironmentObject private var homeModel: HomeViewModel
 
@@ -57,9 +56,9 @@ struct HomeView: View {
                         }
                         .ignoresSafeArea(edges: .bottom)
                         .onReceive(LocationManager.shared.$userLocation, perform: { userLocation in
-                            locationSearchViewModel.userLocation = userLocation
+                            homeModel.userLocation = userLocation
                         })
-                        .onReceive(locationSearchViewModel.$selectedLocation, perform: { location in
+                        .onReceive(homeModel.$selectedLocation, perform: { location in
                             if location != nil {
                                 mapState = .locationSelected
                             }

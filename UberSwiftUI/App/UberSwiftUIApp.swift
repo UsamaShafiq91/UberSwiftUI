@@ -24,7 +24,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct UberSwiftUIApp: App {
     
-    @StateObject private var locationSearchViewModel = LocationSearchViewModel()
     @StateObject private var authModel = AuthViewModel()
     @StateObject private var homeModel = HomeViewModel()
 
@@ -33,7 +32,6 @@ struct UberSwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environmentObject(locationSearchViewModel)
                 .environmentObject(authModel)
                 .environmentObject(homeModel)
         }

@@ -11,7 +11,7 @@ struct MapViewActionButton: View {
     
     @Binding var mapState: MapViewState
     @Binding var showSideMenu: Bool
-    @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
     @EnvironmentObject private var authModel: AuthViewModel
 
     var body: some View {
@@ -39,7 +39,7 @@ struct MapViewActionButton: View {
             mapState = .noInput
         case .locationSelected, .polylineAdded:
             mapState = .noInput
-            locationSearchViewModel.selectedLocation = nil
+            homeViewModel.selectedLocation = nil
         }
     }
     

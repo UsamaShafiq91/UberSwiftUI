@@ -9,18 +9,18 @@ import SwiftUI
 
 struct SavedLocationSearchView: View {
     
-    @StateObject private var locationSearchViewModel = LocationSearchViewModel()
+    @StateObject private var homeViewModel = HomeViewModel()
     let viewModel: SavedLocationViewModel
         
     var body: some View {
         VStack {
-            TextField("Search for a location", text: $locationSearchViewModel.searchQuery)
+            TextField("Search for a location", text: $homeViewModel.searchQuery)
                 .frame(height: 32)
                 .padding(.leading)
                 .background(Color(.systemGray5))
                 .padding()
             
-            LocationSearchResultView(locationSearchViewModel: locationSearchViewModel, config: .savedLocation(viewModel))
+            LocationSearchResultView(homeViewModel: homeViewModel, config: .savedLocation(viewModel))
         }
         .navigationTitle(viewModel.subtitle)
         .navigationBarTitleDisplayMode(.inline)

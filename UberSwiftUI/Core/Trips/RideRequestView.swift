@@ -10,7 +10,7 @@ import SwiftUI
 struct RideRequestView: View {
     
     @State private var selectedRide = RideType.uberX
-    @EnvironmentObject private var locationSearchViewModel: LocationSearchViewModel
+    @EnvironmentObject private var homeViewModel: HomeViewModel
 
     var body: some View {
         VStack {
@@ -42,12 +42,12 @@ struct RideRequestView: View {
                         
                         Spacer()
                         
-                        Text(locationSearchViewModel.startTime ?? "")
+                        Text(homeViewModel.startTime ?? "")
                             .foregroundStyle(.gray)
                             .font(.system(size: 16, weight: .semibold))
                     }
                     
-                    if let selectedLocation = locationSearchViewModel.selectedLocation {
+                    if let selectedLocation = homeViewModel.selectedLocation {
                         HStack {
                             Text(selectedLocation.title)
                                 .foregroundStyle(Color.theme.primaryTextColor)
@@ -55,7 +55,7 @@ struct RideRequestView: View {
                             
                             Spacer()
                             
-                            Text(locationSearchViewModel.endTime ?? "")
+                            Text(homeViewModel.endTime ?? "")
                                 .foregroundStyle(.gray)
                                 .font(.system(size: 16, weight: .semibold))
                         }
@@ -86,7 +86,7 @@ struct RideRequestView: View {
                                 Text(type.name)
                                     .font(.system(size: 14, weight: .semibold))
                                 
-                                Text(locationSearchViewModel.computeRidePrice(for: type).toCurrency())
+                                Text(homeViewModel.computeRidePrice(for: type).toCurrency())
                                     .font(.system(size: 14, weight: .semibold))
                             }
                             .padding()
