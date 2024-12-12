@@ -40,6 +40,8 @@ struct UberMapView: UIViewRepresentable {
             }
         case .polylineAdded:
             break
+        default:
+            break
         }
     }
     

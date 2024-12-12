@@ -50,8 +50,27 @@ struct HomeView: View {
                                     .padding(.horizontal)
                             }
                             
-                            if mapState == .locationSelected || mapState == .polylineAdded {
-                                RideRequestView()
+                            if let user = authModel.user {
+                                if user.accountType == .passenger {
+                                    if mapState == .locationSelected || mapState == .polylineAdded {
+                                        RideRequestView()
+                                            .transition(.move(edge: .bottom))
+                                    }
+                                    else if mapState == .tripRequested {
+                                        TripLoadingView()
+                                            .transition(.move(edge: .bottom))
+                                    }
+                                    else if mapState == .tripAccepted {
+                                        TripAcceptedView()
+                                            .transition(.move(edge: .bottom))
+                                    }
+                                }
+                                else {
+                                    if let trip = homeModel.trip {
+                                        AcceptTripView(trip: trip)
+                                            .transition(.move(edge: .bottom))
+                                    }
+                                }
                             }
                         }
                         .ignoresSafeArea(edges: .bottom)
@@ -61,6 +80,20 @@ struct HomeView: View {
                         .onReceive(homeModel.$selectedLocation, perform: { location in
                             if location != nil {
                                 mapState = .locationSelected
+                            }
+                        })
+                        .onReceive(homeModel.$trip, perform: { trip in
+                            guard let trip = trip else { return }
+                            
+                            withAnimation(.spring) {
+                                switch trip.state {
+                                case .requested:
+                                    self.mapState = .tripRequested
+                                case .rejected:
+                                    self.mapState = .tripRejected
+                                case .accepted:
+                                    self.mapState = .tripAccepted
+                                }
                             }
                         })
                         .offset(x: showSideMenu ? 300 : 0)

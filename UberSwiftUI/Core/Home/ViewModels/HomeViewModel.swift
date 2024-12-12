@@ -16,6 +16,7 @@ class HomeViewModel: NSObject, ObservableObject {
     
     @Published var drivers: [User] = []
     @Published var user: User?
+    @Published var trip: Trip?
 
     let userService = UserService.shared
     private var cancelable = Set<AnyCancellable>()
@@ -42,27 +43,19 @@ class HomeViewModel: NSObject, ObservableObject {
         searchCompletor.queryFragment = searchQuery
     }
     
-    func fetchDrivers() {
-        Firestore.firestore().collection("users")
-            .whereField("accountType", isEqualTo: AccountType.driver.rawValue)
-            .getDocuments(completion: { snapshot, error in
-                if let documents = snapshot?.documents {
-                    let users = documents.compactMap({try? $0.data(as: User.self)})
-                    self.drivers = users
-                    
-                    print("Drivers: \(users)")
-                }
-            })
-    }
-    
     func fetchUser() {
         userService.$user
             .sink(receiveValue: { user in
                 guard let user = user else { return }
                 self.user = user
                 
-                guard user.accountType == .passenger else { return }
-                self.fetchDrivers()
+                if user.accountType == .passenger {
+                    self.fetchDrivers()
+                    self.addObserverForPassenger()
+                }
+                else {
+                    self.fetchTrips()
+                }
             })
             .store(in: &cancelable)
     }
@@ -175,8 +168,37 @@ extension HomeViewModel {
     }
 }
 
-// Passenger APIs
+
+// MARK: - Passenger APIs
 extension HomeViewModel {
+    
+    func addObserverForPassenger() {
+        guard let currentUser = user else { return }
+        
+        Firestore.firestore().collection("trips")
+            .whereField("passengerUid", isEqualTo: currentUser.uid)
+            .addSnapshotListener({snapshot, error in
+                guard let documentChange = snapshot?.documentChanges.first,
+                      documentChange.type == .added || documentChange.type == .modified else { return }
+                
+                guard let trip = try? documentChange.document.data(as: Trip.self) else { return }
+                
+                self.trip = trip
+            })
+    }
+    
+    func fetchDrivers() {
+        Firestore.firestore().collection("users")
+            .whereField("accountType", isEqualTo: AccountType.driver.rawValue)
+            .getDocuments(completion: { snapshot, error in
+                if let documents = snapshot?.documents {
+                    let users = documents.compactMap({try? $0.data(as: User.self)})
+                    self.drivers = users
+                    
+                    print("Drivers: \(users)")
+                }
+            })
+    }
     
     func requestTrip() {
         guard let driver = drivers.first,
@@ -189,8 +211,9 @@ extension HomeViewModel {
                                             completionHandler: { placemarks, errors in
             guard let placemark = placemarks?.first else { return }
             
-            let trip = Trip(id: UUID().uuidString,
-                            passengerUid: passenger.uid,
+            let tripCost = self.computeRidePrice(for: .uberX)
+            
+            let trip = Trip(passengerUid: passenger.uid,
                             driverUid: driver.uid,
                             passengerName: passenger.fullname,
                             driverName: driver.fullname,
@@ -198,11 +221,12 @@ extension HomeViewModel {
                             driverLocation: driver.coordinates,
                             pickupLocationName: placemark.name ?? "Current Location",
                             dropoffLocationName: dropofflocation.title,
-                            pickupLocationAddress: "pickupLocationAddress",
+                            pickupLocationAddress: placemark.getCompleteAddress(),
                             pickupLocation: passenger.coordinates,
                             dropoffLocation: GeoPoint(latitude: coordinates.latitude,
                                                       longitude: coordinates.longitude),
-                            tripCost: 50)
+                            tripCost: tripCost,
+                            state: .requested)
             
             guard let encodedTrip = try? Firestore.Encoder().encode(trip) else { return }
             
@@ -210,6 +234,56 @@ extension HomeViewModel {
                 
             })
         })
+    }
+}
+
+// MARK: - Driver APIs
+extension HomeViewModel {
+    
+    func fetchTrips() {
+        guard let currentUser = user else { return }
+        
+        Firestore.firestore().collection("trips")
+            .whereField("driverUid", isEqualTo: currentUser.uid)
+            .getDocuments(completion: { snapshot, error in
+                
+                if let document = snapshot?.documents.first {
+                    guard let trip = try? document.data(as: Trip.self) else { return }
+                    
+                    self.trip = trip
+                    
+                    self.getDestinationRoute(userlocation: trip.pickupLocation.toCoordinate(),
+                                             destination: trip.dropoffLocation.toCoordinate(),
+                                             completion: { route in
+                        self.trip?.estimateTimeToPassenger = Int(route.expectedTravelTime / 60)
+                        self.trip?.estimatedDistanceToPassenger = route.distance
+                    })
+                }
+            })
+    }
+    
+    func acceptTrip() {
+        updateTripState(state: .accepted)
+    }
+    
+    func rejectTrip() {
+        updateTripState(state: .rejected)
+    }
+    
+    private func updateTripState(state: TripState) {
+        guard let trip = trip else { return }
+        
+        var data = ["state": state.rawValue]
+        
+        if state == .accepted {
+            data["estimateTimeToPassenger"] = trip.estimateTimeToPassenger
+        }
+        
+        Firestore.firestore().collection("trips").document(trip.id)
+            .updateData(data,
+                        completion: {_ in
+                print("Updated trip state to \(state)")
+            })
     }
 }
 

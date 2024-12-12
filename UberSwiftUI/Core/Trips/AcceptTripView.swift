@@ -10,15 +10,24 @@ import MapKit
 
 struct AcceptTripView: View {
     
-    @State private var position = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 37.334, longitude: -122.0090),
-            span: MKCoordinateSpan(latitudeDelta: 0.025, longitudeDelta: 0.025)
-        )
-    )
-
+    @State private var position = MapCameraPosition.automatic
+    let trip: Trip
+    let annotation: UberLocation
     
-    init() {
+    @EnvironmentObject private var homeViewModel: HomeViewModel
+
+    init(trip: Trip) {
+        self.trip = trip
+        
+        self.annotation = UberLocation(title: trip.pickupLocationName,
+                                       coordinates: trip.pickupLocation.toCoordinate())
+
+        position = MapCameraPosition.region(
+            MKCoordinateRegion(
+                center: trip.pickupLocation.toCoordinate(),
+                span: MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035)
+            )
+        )
     }
     
     var body: some View {
@@ -39,7 +48,7 @@ struct AcceptTripView: View {
                     Spacer()
                     
                     VStack {
-                        Text("10")
+                        Text("\(trip.estimateTimeToPassenger)")
                             .bold()
                         
                         Text("min")
@@ -64,7 +73,7 @@ struct AcceptTripView: View {
                         .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                     
                     VStack(alignment: .leading) {
-                        Text("STEPHAN")
+                        Text(trip.passengerName)
                             .font(.headline)
                             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                         
@@ -86,7 +95,7 @@ struct AcceptTripView: View {
                             .fontWeight(.semibold)
                             .foregroundStyle(.gray)
                         
-                        Text("$22.04")
+                        Text("\(trip.tripCost.toCurrency())")
                             .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                             .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                     }
@@ -99,11 +108,11 @@ struct AcceptTripView: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("Apple Campus")
+                        Text(trip.pickupLocationName)
                             .font(.headline)
                             .fontWeight(.bold)
                         
-                        Text("Lane 1")
+                        Text(trip.pickupLocationAddress)
                             .font(.subheadline)
                             .foregroundStyle(.gray)
                             .fontWeight(.bold)
@@ -112,7 +121,7 @@ struct AcceptTripView: View {
                     Spacer()
                     
                     VStack(alignment: .leading) {
-                        Text("5.2")
+                        Text(trip.estimatedDistanceToPassenger.toDistanceInMiles())
                             .font(.headline)
                             .fontWeight(.bold)
                         
@@ -124,18 +133,21 @@ struct AcceptTripView: View {
                 }
                 .padding(.horizontal)
 
-                Map(position: $position)
-                    .frame(height: 200)
-                    .clipShape(.rect(cornerRadius: 10))
-                    .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.7), radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                    .padding()
+                Map(position: $position) {
+                    Marker(trip.pickupLocationName,
+                           coordinate: trip.pickupLocation.toCoordinate())
+                }
+                .frame(height: 200)
+                .clipShape(.rect(cornerRadius: 10))
+                .shadow(color: /*@START_MENU_TOKEN@*/.black/*@END_MENU_TOKEN@*/.opacity(0.7), radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .padding()
 
                Divider()
             }
             
             HStack {
                 Button(action: {
-                    
+                    homeViewModel.rejectTrip()
                 }, label: {
                     Text("Reject")
                         .font(.headline)
@@ -150,7 +162,7 @@ struct AcceptTripView: View {
                 Spacer()
                 
                 Button(action: {
-                    
+                    homeViewModel.acceptTrip()
                 }, label: {
                     Text("Accept")
                         .font(.headline)
@@ -163,10 +175,14 @@ struct AcceptTripView: View {
                 })
             }
             .padding()
+            .padding(.bottom, 24)
         }
+        .background(Color.theme.backgroundColor)
+        .clipShape(.rect(cornerRadius: 20))
+        .shadow(color: Color.theme.secondaryBackgroundColor, radius: 20)
     }
 }
 
 #Preview {
-    AcceptTripView()
+    AcceptTripView(trip: MockData.trip)
 }
