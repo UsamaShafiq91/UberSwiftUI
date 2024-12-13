@@ -64,11 +64,23 @@ struct HomeView: View {
                                         TripAcceptedView()
                                             .transition(.move(edge: .bottom))
                                     }
+                                    else if mapState == .tripCancelledByPassenger {
+                                        
+                                    }
                                 }
                                 else {
                                     if let trip = homeModel.trip {
-                                        AcceptTripView(trip: trip)
-                                            .transition(.move(edge: .bottom))
+                                        if mapState == .tripRequested {
+                                            AcceptTripView(trip: trip)
+                                                .transition(.move(edge: .bottom))
+                                        }
+                                        else if mapState == .tripAccepted {
+                                            PassengerPickupView(trip: trip)
+                                                .transition(.move(edge: .bottom))
+                                        }
+                                        else if mapState == .tripCancelledByDriver {
+                                            
+                                        }
                                     }
                                 }
                             }
@@ -93,6 +105,10 @@ struct HomeView: View {
                                     self.mapState = .tripRejected
                                 case .accepted:
                                     self.mapState = .tripAccepted
+                                case .passengerCancelled:
+                                    self.mapState = .tripCancelledByPassenger
+                                case .driverCancelled:
+                                    self.mapState = .tripCancelledByDriver
                                 }
                             }
                         })

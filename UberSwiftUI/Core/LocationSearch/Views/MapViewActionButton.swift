@@ -41,7 +41,9 @@ struct MapViewActionButton: View {
                 .polylineAdded,
                 .tripRequested,
                 .tripAccepted,
-                .tripRejected:
+                .tripRejected,
+                .tripCancelledByPassenger,
+                .tripCancelledByDriver:
             mapState = .noInput
             homeViewModel.selectedLocation = nil
         }
@@ -56,7 +58,9 @@ struct MapViewActionButton: View {
                 .polylineAdded,
                 .tripRequested,
                 .tripAccepted,
-                .tripRejected:
+                .tripRejected,
+                .tripCancelledByPassenger,
+                .tripCancelledByDriver:
             return "arrow.left"
         }
     }

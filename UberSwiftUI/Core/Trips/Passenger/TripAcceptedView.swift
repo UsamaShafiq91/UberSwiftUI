@@ -96,6 +96,7 @@ struct TripAcceptedView: View {
             }
             
             Button(action: {
+                viewModel.cancelAsPassenger()
             }, label: {
                 Text("Cancel Trip")
                     .font(.headline)

@@ -40,6 +40,14 @@ struct UberMapView: UIViewRepresentable {
             }
         case .polylineAdded:
             break
+        case .tripAccepted:
+            guard let user = homeModel.user, user.accountType == .driver,
+                  let route = homeModel.destinationRoute,
+                  let pickup = homeModel.trip?.pickupLocation else { return }
+            
+            context.coordinator.selectAndAnnotateLocation(coordinate: pickup.toCoordinate())
+            context.coordinator.configurePickupFor(route: route)
+            
         default:
             break
         }
@@ -105,6 +113,17 @@ extension UberMapView {
             }
             
             return nil
+        }
+        
+        func configurePickupFor(route: MKRoute) {
+            self.parent.mapView.addOverlay(route.polyline)
+            
+            let rect = self.parent.mapView.mapRectThatFits(route.polyline.boundingMapRect,
+                                                           edgePadding: UIEdgeInsets(top: 84,
+                                                                                     left: 32,
+                                                                                     bottom: 360,
+                                                                                     right: 32))
+            self.parent.mapView.setRegion(MKCoordinateRegion(rect), animated: true)
         }
         
         func configurePolyline(destination: CLLocationCoordinate2D) {

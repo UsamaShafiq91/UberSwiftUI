@@ -17,6 +17,8 @@ class HomeViewModel: NSObject, ObservableObject {
     @Published var drivers: [User] = []
     @Published var user: User?
     @Published var trip: Trip?
+    
+    var destinationRoute: MKRoute?
 
     let userService = UserService.shared
     private var cancelable = Set<AnyCancellable>()
@@ -43,6 +45,32 @@ class HomeViewModel: NSObject, ObservableObject {
         searchCompletor.queryFragment = searchQuery
     }
     
+    func tripCancelledMessage() -> String {
+        guard let user = user,
+              let trip = trip else { return "" }
+        
+        var message = ""
+        
+        if user.accountType == .passenger {
+            if trip.state == .passengerCancelled {
+                message = "Your trip is cancelled"
+            }
+            else if trip.state == .driverCancelled {
+                message = "The driver cancelled the trip"
+            }
+        }
+        else {
+            if trip.state == .driverCancelled {
+                message = "Your trip is cancelled"
+            }
+            else if trip.state == .passengerCancelled {
+                message = "The trip is being cancelled by the passenger"
+            }
+        }
+        
+        return message
+    }
+    
     func fetchUser() {
         userService.$user
             .sink(receiveValue: { user in
@@ -54,10 +82,18 @@ class HomeViewModel: NSObject, ObservableObject {
                     self.addObserverForPassenger()
                 }
                 else {
-                    self.fetchTrips()
+                    self.addObserverForDriver()
                 }
             })
             .store(in: &cancelable)
+    }
+    
+    func deleteTrip() {
+        guard let trip = trip else { return }
+        
+        Firestore.firestore().collection("trips").document(trip.id).delete(completion: {_ in 
+            self.trip = nil
+        })
     }
 }
 
@@ -194,8 +230,6 @@ extension HomeViewModel {
                 if let documents = snapshot?.documents {
                     let users = documents.compactMap({try? $0.data(as: User.self)})
                     self.drivers = users
-                    
-                    print("Drivers: \(users)")
                 }
             })
     }
@@ -235,30 +269,35 @@ extension HomeViewModel {
             })
         })
     }
+    
+    func cancelAsPassenger() {
+        updateTripState(state: .passengerCancelled)
+    }
 }
 
 // MARK: - Driver APIs
 extension HomeViewModel {
     
-    func fetchTrips() {
+    func addObserverForDriver() {
         guard let currentUser = user else { return }
         
         Firestore.firestore().collection("trips")
             .whereField("driverUid", isEqualTo: currentUser.uid)
-            .getDocuments(completion: { snapshot, error in
+            .addSnapshotListener({snapshot, error in
+                guard let documentChange = snapshot?.documentChanges.first,
+                      documentChange.type == .added || documentChange.type == .modified else { return }
                 
-                if let document = snapshot?.documents.first {
-                    guard let trip = try? document.data(as: Trip.self) else { return }
-                    
-                    self.trip = trip
-                    
-                    self.getDestinationRoute(userlocation: trip.pickupLocation.toCoordinate(),
-                                             destination: trip.dropoffLocation.toCoordinate(),
-                                             completion: { route in
-                        self.trip?.estimateTimeToPassenger = Int(route.expectedTravelTime / 60)
-                        self.trip?.estimatedDistanceToPassenger = route.distance
-                    })
-                }
+                guard let trip = try? documentChange.document.data(as: Trip.self) else { return }
+                
+                self.trip = trip
+                
+                self.getDestinationRoute(userlocation: trip.driverLocation.toCoordinate(),
+                                         destination: trip.pickupLocation.toCoordinate(),
+                                         completion: { route in
+                    self.destinationRoute = route
+                    self.trip?.estimateTimeToPassenger = Int(route.expectedTravelTime / 60)
+                    self.trip?.estimatedDistanceToPassenger = route.distance
+                })
             })
     }
     
@@ -268,6 +307,10 @@ extension HomeViewModel {
     
     func rejectTrip() {
         updateTripState(state: .rejected)
+    }
+    
+    func cancelAsDriver() {
+        updateTripState(state: .driverCancelled)
     }
     
     private func updateTripState(state: TripState) {
